@@ -5,12 +5,12 @@ import (
 )
 
 type WebRequest struct {
-	AppID     string `xml:"appid";json:"appid"`
-	TimeStamp string `xml:"timeStamp";json:"timeStamp"`
-	NonceStr  string `xml:"nonceStr";json:"nonceStr"`
-	Package   string `xml:"package";json:"package"`
-	SignType  string `xml:"signType";json:"signType"`
-	PaySign   string `xml:"paySign";json:"paySign"`
+	AppID     string `json:"appId"`
+	TimeStamp string `json:"timeStamp"`
+	NonceStr  string `json:"nonceStr"`
+	Package   string `json:"package"`
+	SignType  string `json:"signType"`
+	PaySign   string `json:"paySign"`
 }
 
 func (s *WebRequest) ToMap() map[string]string {
