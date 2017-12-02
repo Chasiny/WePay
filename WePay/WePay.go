@@ -132,7 +132,10 @@ func (wp *WePay) WebRequest(out_trade_no string, fee int, client_ip string, dura
 		Package:   "prepay_id=" + res.PrepayID.Text,
 		SignType:  "MD5",
 	}
-	webres.SignUp(wp.Key)
+	err = webres.SignUp(wp.Key)
+	if err != nil {
+		return nil, err
+	}
 	return webres, nil
 }
 
