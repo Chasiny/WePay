@@ -7,7 +7,9 @@
 > - 生成前端支付的参数
 
 ### 使用步骤
-
+> go get github.com/Chasiny/WePay/WePay
+> import "github.com/Chasiny/WePay/WePay"
+> 
 > ```go
 >  //配置公众号
 >  	wp := &WePay.WePay{}
