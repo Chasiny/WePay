@@ -15,11 +15,11 @@ type WebRequest struct {
 
 func (s *WebRequest) ToMap() map[string]string {
 	mapData := map[string]string{
-		"appId":    s.AppID,
-		"nonceStr": s.NonceStr,
-		"package":  s.Package,
-		"signType": s.SignType,
-		"paySign":  s.PaySign,
+		"appId":     s.AppID,
+		"nonceStr":  s.NonceStr,
+		"package":   s.Package,
+		"signType":  s.SignType,
+		"timeStamp": s.TimeStamp,
 	}
 
 	return mapData
