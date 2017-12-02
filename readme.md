@@ -8,13 +8,13 @@
 
 ### 使用步骤
 
->- ```go
+> ```go
 >  //配置公众号
 >  	wp := &WePay.WePay{}
 >  	wp.Init("填写公众号APPID","公众号对应的商户号id","商户API密钥","支付通知地址（后端接口）")
 >  ```
 >
->- ```go
+> ```go
 >  //生成订单号
 >  	outTradeNO:=WePay.CreateOutTradeNO()
 >
@@ -27,7 +27,7 @@
 >  	fmt.Println(res.Package)
 >  ```
 >
->- ```go
+> ```go
 >  //查询订单
 >  	ans,err:=wp.Query(outTradeNO)
 >  	if (err != nil) {
