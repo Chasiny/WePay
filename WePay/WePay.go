@@ -1,14 +1,13 @@
 package WePay
 
 import (
-	"fmt"
-	"encoding/xml"
-	"net/http"
 	"bytes"
-	"io/ioutil"
+	"encoding/xml"
 	"errors"
-	"time"
+	"io/ioutil"
+	"net/http"
 	"strconv"
+	"time"
 )
 
 type WePay struct {
@@ -21,23 +20,23 @@ type WePay struct {
 }
 
 //初始化Wepay
-func (wp *WePay) Init(appid string,mchid string,key string,notify_url string) (error) {
-	if (UNIFIEDORDER_URL == "") {
+func (wp *WePay) Init(appid string, mchid string, key string, notify_url string) error {
+	if UNIFIEDORDER_URL == "" {
 		return errors.New("UNIFIEDORDER_URL nil")
 	}
-	if (ORDERQUERY_URL == "") {
+	if ORDERQUERY_URL == "" {
 		return errors.New("ORDERQUERY_URL nil")
 	}
-	if (notify_url == "") {
+	if notify_url == "" {
 		return errors.New("NOTIFY_URL nil")
 	}
-	if (appid == "") {
+	if appid == "" {
 		return errors.New("AppID nil")
 	}
-	if (mchid == "") {
+	if mchid == "" {
 		return errors.New("MchID nil")
 	}
-	if (key == "") {
+	if key == "" {
 		return errors.New("Key nil")
 	}
 	wp.UnifiedOrderUrl = UNIFIEDORDER_URL
@@ -51,29 +50,29 @@ func (wp *WePay) Init(appid string,mchid string,key string,notify_url string) (e
 
 //统一下单
 func (wp *WePay) Request(out_trade_no string, fee int, client_ip string, duration int, open_id string) (*UnifiedOrderRespone, error) {
-	if (wp.MchID == "" || wp.AppId == "") {
+	if wp.MchID == "" || wp.AppId == "" {
 		return nil, errors.New("MchID or AppId nil")
 	}
-	if (wp.Key == "") {
+	if wp.Key == "" {
 		return nil, errors.New("Key nil")
 	}
-	if (out_trade_no == "") {
+	if out_trade_no == "" {
 		return nil, errors.New("out_trade_no nil")
 	}
 	randomStr := createNonceStr()
-	if (len(randomStr) != 32) {
+	if len(randomStr) != 32 {
 		return nil, errors.New("randomStr error")
 	}
-	if (fee <= 0) {
+	if fee <= 0 {
 		return nil, errors.New("fee smaller than 0")
 	}
-	if (duration <= 0) {
+	if duration <= 0 {
 		return nil, errors.New("duration smaller than 0")
 	}
-	if (client_ip == "") {
+	if client_ip == "" {
 		return nil, errors.New("client_ip nil")
 	}
-	if (open_id == "") {
+	if open_id == "" {
 		return nil, errors.New("open_id nil")
 	}
 
@@ -98,59 +97,55 @@ func (wp *WePay) Request(out_trade_no string, fee int, client_ip string, duratio
 	}
 	var err error
 	err = request.SignUp(wp.Key)
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 
 	buf, err := post(wp.UnifiedOrderUrl, request)
-	if (err != nil) {
-		fmt.Println(err.Error())
+	if err != nil {
 		return nil, err
 	}
 	respon := &UnifiedOrderRespone{}
 	err = xml.Unmarshal(buf, respon)
-	if (err != nil) {
-		fmt.Println(err.Error())
+	if err != nil {
 		return nil, err
 	}
 	return respon, nil
 }
 
-
 //整合获取前端下单的参数
 func (wp *WePay) WebRequest(out_trade_no string, fee int, client_ip string, duration int, open_id string) (*WebRequest, error) {
-	if(wp.Key==""){
-		return nil,errors.New("Key nil")
+	if wp.Key == "" {
+		return nil, errors.New("Key nil")
 	}
-	res,err:=wp.Request(out_trade_no , fee , client_ip , duration , open_id )
-	if (err != nil) {
-		fmt.Println(err.Error())
+	res, err := wp.Request(out_trade_no, fee, client_ip, duration, open_id)
+	if err != nil {
 		return nil, err
 	}
-	if(res.ReturnCode.Text!="SUCCESS"||res.ResultCode.Text!="SUCCESS"){
-		return nil, errors.New("WebRequest fail:"+res.ErrCodeDes.Text)
+	if res.ReturnCode.Text != "SUCCESS" || res.ResultCode.Text != "SUCCESS" {
+		return nil, errors.New("WebRequest fail:" + res.ErrCodeDes.Text)
 	}
-	webres:=&WebRequest{
-		AppID:wp.AppId,
-		TimeStamp:strconv.FormatInt(time.Now().Unix(),10),
-		NonceStr:createNonceStr(),
-		Package:"prepay_id="+res.PrepayID.Text,
-		SignType:"MD5",
+	webres := &WebRequest{
+		AppID:     wp.AppId,
+		TimeStamp: strconv.FormatInt(time.Now().Unix(), 10),
+		NonceStr:  createNonceStr(),
+		Package:   "prepay_id=" + res.PrepayID.Text,
+		SignType:  "MD5",
 	}
 	webres.SignUp(wp.Key)
-	return webres,nil
+	return webres, nil
 }
 
 //查询订单
 func (wp *WePay) Query(out_trade_no string) (res *QueryRequest, err error) {
-	if (wp.MchID == "" || wp.AppId == "") {
+	if wp.MchID == "" || wp.AppId == "" {
 		return nil, errors.New("MchID or AppId nil")
 	}
-	if (out_trade_no == "") {
+	if out_trade_no == "" {
 		return nil, errors.New("out_trade_no nil")
 	}
 	randomStr := createNonceStr()
-	if (len(randomStr) != 32) {
+	if len(randomStr) != 32 {
 		return nil, errors.New("randomStr error")
 	}
 
@@ -162,40 +157,39 @@ func (wp *WePay) Query(out_trade_no string) (res *QueryRequest, err error) {
 		SignType:   "MD5",
 	}
 	err = q.SignUp(wp.Key)
-	if (err != nil) {
+	if err != nil {
 		return nil, errors.New("SignUp error:" + err.Error())
 	}
 
 	respon, err := post(wp.OrderQueryUrl, q)
-	if (err != nil) {
-		fmt.Println("error:", err.Error())
+	if err != nil {
 		return nil, err
 	}
-	queryRespon:=&QueryRequest{}
-	xml.Unmarshal(respon,&queryRespon)
-	fmt.Println(string(respon))
+	queryRespon := &QueryRequest{}
+	xml.Unmarshal(respon, &queryRespon)
 	return queryRespon, nil
 
 }
+
 //简单封装post
 func post(url string, data interface{}) (res_buf []byte, err error) {
-	if (url == "") {
+	if url == "" {
 		return nil, errors.New("url nil")
 	}
-	if (data == nil) {
+	if data == nil {
 		return nil, errors.New("buf nil")
 	}
 	buf, err := xml.Marshal(data)
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 
 	r, err := http.Post(url, "application/x-www-form-urlencoded", bytes.NewBuffer([]byte(buf)))
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 	res_buf, err = ioutil.ReadAll(r.Body)
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 	return res_buf, nil
