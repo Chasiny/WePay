@@ -15,7 +15,7 @@ type WebRequest struct {
 
 func (s *WebRequest) ToMap() map[string]string {
 	mapData := map[string]string{
-		"appid":    s.AppID,
+		"appId":    s.AppID,
 		"nonceStr": s.NonceStr,
 		"package":  s.Package,
 		"signType": s.SignType,
@@ -26,15 +26,15 @@ func (s *WebRequest) ToMap() map[string]string {
 }
 
 func (u *WebRequest) SignUp(key string) (err error) {
-	if (key == "") {
+	if key == "" {
 		return errors.New("key is nil")
 	}
-	if (u == nil) {
+	if u == nil {
 		return errors.New("WePay is nil")
 	}
 	m := u.ToMap()
 	u.PaySign, err = getSignStr(m, key)
-	if (err != nil) {
+	if err != nil {
 		return err
 	}
 	return nil
