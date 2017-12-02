@@ -7,10 +7,10 @@ type UnifiedOrderNotify struct {
 	CashFee            CDATA `xml:"cash_fee"`             //现金支付金额
 	DeviceInfo         CDATA `xml:"device_info"`          //设备号
 	FeeType            CDATA `xml:"fee_type"`             //货币种类
-	IsSubscribe        CDATA `xml:"err_code_des"`         //是否关注公众账号
+	IsSubscribe        CDATA `xml:"is_subscribe"`         //是否关注公众账号
 	MchID              CDATA `xml:"mch_id"`               //商户号
 	NonceStr           CDATA `xml:"nonce_str"`            //随机字符串
-	OpenID             CDATA `xml:"err_code_des"`         //用户标识
+	OpenID             CDATA `xml:"openid"`               //用户标识
 	OutTradeNO         CDATA `xml:"out_trade_no"`         //商户订单号
 	ResultCode         CDATA `xml:"result_code"`          //业务结果
 	ReturnCode         CDATA `xml:"return_code"`          //返回错误码
