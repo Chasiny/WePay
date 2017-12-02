@@ -8,7 +8,7 @@
 
 ### 使用步骤
 > go get github.com/Chasiny/WePay/WePay
-> import "github.com/Chasiny/WePay/WePay"
+> import "github.com/Chasiny/WePay/WePay"   
 > 
 > ```go
 >  //配置公众号
