@@ -11,12 +11,12 @@
 > go get github.com/Chasiny/WePay/WePay
 > import "github.com/Chasiny/WePay/WePay"   
 > ```
-> 
+>
 > ```go
 >  //配置公众号
 >  	wp := &WePay.WePay{}
 >  	wp.Init("填写公众号APPID","公众号对应的商户号id","商户API密钥","支付通知地址（后端接口）")
->  ```
+> ```
 >
 > ```go
 >  //生成订单号
@@ -29,7 +29,7 @@
 >  		return
 >  	}
 >  	fmt.Println(res.Package)
->  ```
+> ```
 >
 > ```go
 >  //查询订单
@@ -38,8 +38,37 @@
 >  		fmt.Println(err.Error())
 >  		return
 >  	}
->  ```
+> ```
 >
+
+### angular2前端调用支付
+
+> ```typescript
+> //WeixinJSBridge属于微信浏览器内置对象，在typescript中declare就可以避免编译出错
+> declare var WeixinJSBridge:any;
+> declare var document:any;
+>
+> WeixinJSBridge.invoke(
+>     'getBrandWCPayRequest', {
+>         "appId": p.appId,
+>         "timeStamp": p.timeStamp  ,
+>         "nonceStr": p.nonceStr,
+>         "package": p.package,
+>         "signType": p.signType,
+>         "paySign": p.paySign,
+>       },
+>     function (res) {
+>       if (res.err_msg == "get_brand_wcpay_request:ok") {
+>         alert("支付成功");
+>       } 
+>       else {
+>         alert("支付失败" + JSON.stringify(res));
+>       }
+>     }
+>   );
+> ```
+>
+> 
 
 ### by chasiny
 
