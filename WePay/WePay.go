@@ -168,7 +168,7 @@ func (wp *WePay) Query(out_trade_no string) (res *QueryRequest, err error) {
 	if err != nil {
 		return nil, err
 	}
-	queryRespon := &QueryRequest{}
+	queryRespon := &UnifiedOrderRespone{}
 	xml.Unmarshal(respon, &queryRespon)
 	return queryRespon, nil
 
