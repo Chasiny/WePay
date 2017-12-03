@@ -140,7 +140,7 @@ func (wp *WePay) WebRequest(out_trade_no string, fee int, client_ip string, dura
 }
 
 //查询订单
-func (wp *WePay) Query(out_trade_no string) (res *UnifiedOrderRespone, err error) {
+func (wp *WePay) Query(out_trade_no string) (res *QueryRespon, err error) {
 	if wp.MchID == "" || wp.AppId == "" {
 		return nil, errors.New("MchID or AppId nil")
 	}
@@ -168,7 +168,7 @@ func (wp *WePay) Query(out_trade_no string) (res *UnifiedOrderRespone, err error
 	if err != nil {
 		return nil, err
 	}
-	queryRespon := &UnifiedOrderRespone{}
+	queryRespon := &QueryRespon{}
 	xml.Unmarshal(respon, &queryRespon)
 	return queryRespon, nil
 
