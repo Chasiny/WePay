@@ -8,7 +8,7 @@
 
 ### 使用步骤
 > ```go
-> go get github.com/Chasiny/WePay/WePay
+> go get github.com/Chasiny/wechat/wepay
 > import "github.com/Chasiny/wechat/wepay"   
 > ```
 >
