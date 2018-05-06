@@ -9,7 +9,7 @@
 ### 使用步骤
 > ```go
 > go get github.com/Chasiny/WePay/WePay
-> import "github.com/Chasiny/WePay/WePay"   
+> import "github.com/Chasiny/wechat/wepay"   
 > ```
 >
 > ```go
